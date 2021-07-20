@@ -1,7 +1,7 @@
 {
-  "name": "registration",
+  "name": "authentication",
   "version": "1.0.0",
-  "description": "Microservice used used for creating new users",
+  "description": "Microservice used used for authenticating new users",
   "main": "app.js",
   "directories": {
     "test": "test"
