@@ -19,7 +19,7 @@ app.use(express.json());
 
 
 //Route middleware
-app.use("/login", loginRouter);
+app.use("/authenticate", loginRouter);
 app.use("/", pingRouter);
 
 

@@ -4,7 +4,7 @@
  * Martin Alemajoh
  */
 
-const { createVerify } = require("crypto");
+const { createSign } = require("crypto");
 const path = require('path');
 const Client = require(path.join(__dirname, '../services/Client'));
 const Crud = require(path.join(__dirname, './Crud'));
@@ -36,17 +36,17 @@ class Helper {
     }
 
     /**
-     * Verifies if a signature is valid
+     * Signs and returns a signature
      * @param {any} data 
-     * @param {string} signature 
-     * @returns {promise} a promise that will be resolved to a boolean.
+     * @returns {string} a string representing the signature
      */
-    static verifyToken(data, signature, publicKey) {
+    static signToken(data, privateKey) {
 
-        const verify = createVerify('SHA256');
-        verify.write(data);
-        verify.end();
-        return verify.verify(publicKey, signature, 'hex');
+        const sign = createSign('SHA256');
+        sign.write(data);
+        sign.end();
+        const signature = sign.sign(privateKey, 'hex');
+        return signature;
     }
 
     /**
