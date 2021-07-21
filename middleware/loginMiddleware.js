@@ -24,7 +24,7 @@ function validatePayLoad(req, res, next) {
 
 function validate(req, res, next) {
 
-    const { phone, password } = req.body.phone;
+    const { phone, password } = req.body;
     if (!Validate.isValidPhone(phone) || !Validate.isValidPassword(password)) {
         const statusCode = 400;
         const error = "Invalid phone number or password";
@@ -61,9 +61,9 @@ async function loginAttempts(req, res, next) {
     const { phone } = req.body;
 
     try {
-        const
         const result = await Query.selectOne("login", "phone", phone);
-        if (!result.length === 1) {
+
+        if (result.length === 0) {
             const statusCode = 403;
             const error = "Unauthorized";
             next({ error, statusCode });
@@ -73,7 +73,7 @@ async function loginAttempts(req, res, next) {
 
             const insertObject = { "phone": phone, "reason": "Multiple failed login attempts", "date": new Date() };
             await Query.insert("blacklist", insertObject);
-            const options = { "templateName": "block", "address": payload.email, "subject": "Account Blocked" }
+            const options = { "templateName": "block", "address": result[0]["email"], "subject": "Account Blocked" }
             await SendEmail.sendEmail(options);
             const statusCode = 403;
             const error = "Account Blocked. Please follow up with the email sent to you.";
@@ -81,6 +81,8 @@ async function loginAttempts(req, res, next) {
             return;
         }
 
+        req.body.d_password = result[0]["password"];
+        req.body.fails = result[0]["fails"];
         next();
     } catch (err) {
         const statusCode = 500;

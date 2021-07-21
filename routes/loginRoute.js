@@ -17,7 +17,7 @@ router.post("/login", LoginController.middleware(), (req, res) => {
     LoginController.login(req, res);
 });
 
-router.post("/logout", LogoutController.middleware(), (req, res) => {
+router.get("/logout", (req, res) => {
     LogoutController.logout(req, res);
 });
 

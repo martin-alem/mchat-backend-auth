@@ -30,7 +30,7 @@ class SendEmail {
 
         try {
             await sgMail.send(msg);
-            Logger.logError("Email sent", __filename, new Date());
+            Logger.logInfo("Email sent", __filename, new Date());
             return true;
         } catch (error) {
             Logger.logError(err.message, __filename, new Date());

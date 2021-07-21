@@ -7,43 +7,34 @@
 const path = require('path');
 const Controller = require(path.join(__dirname, './Controller'));
 const SendResponse = require(path.join(__dirname, "../utils/SendResponse"));
-const Hash = require(path.join(__dirname, "../services/Hash"))
-const middleware = require(path.join(__dirname, "../middleware/signupMiddleware"));
+const Hash = require(path.join(__dirname, "../services/Hash"));
+const Query = require(path.join(__dirname, "../model/Query"))
+const middleware = require(path.join(__dirname, "../middleware/loginMiddleware"));
 const Logger = require(path.join(__dirname, "../utils/Logger"));
+const Helper = require(path.join(__dirname, "../utils/Helper"));
 
 
 class LoginController extends Controller {
 
     static async login(req, res) {
 
-        const { phone, password } = req.body;
+        let { phone, password, d_password, fails } = req.body;
 
         try {
-            const selectResult = await Query.selectOne("login", "phone", phone);
-            if (selectResult.length === 1) {
-
-                if (Hash.hashData(password) === selectResult[0]["password"]) {
-                    const statusCode = 200;
-                    const message = "Login Successful";
-                    res.cookie('authentication', signature, { expires: new Date(Date.now() + 1 * 3600000), httpOnly: true, secure: true, sameSite: "None" });
-                    SendResponse.successResponse(statusCode, req, res, message);
-                }
-                else {
-                    const updateFails = selectResult[0]["fails"] += 1;
-                    await Query.updateOne("login", "fails", updateFails, "phone", phone);
-                    const statusCode = 400;
-                    const error = "Invalid phone or password";
-                    SendResponse.failedResponse(statusCode, req, res, error);
-                    Logger.logWarning(err.message, __filename, new Date());
-
-                }
+            if (Hash.hashData(password) === d_password) {
+                const privateKey = await Helper.getKey("private");
+                const signature = Helper.signToken(phone, privateKey);
+                const statusCode = 200;
+                const message = "Login Successful";
+                res.cookie('authentication', signature, { expires: new Date(Date.now() + 1 * 3600000), httpOnly: true, secure: true, sameSite: "None" });
+                SendResponse.successResponse(statusCode, req, res, message);
             }
             else {
+                const updateFails = fails += 1;
+                await Query.updateOne("login", "fails", updateFails, "phone", phone);
                 const statusCode = 400;
                 const error = "Invalid phone or password";
                 SendResponse.failedResponse(statusCode, req, res, error);
-                Logger.logWarning(err.message, __filename, new Date());
-
             }
         } catch (err) {
             const statusCode = 500;
