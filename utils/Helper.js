@@ -5,14 +5,13 @@
  */
 
 const { createSign } = require("crypto");
-const path = require("path");
-const Crud = require(path.join(__dirname, "./Crud"));
+
 
 class Helper {
 
 	/**
-     * Return a formatted data: MM-DD-YYYY
-     */
+	 * Return a formatted data: MM-DD-YYYY
+	 */
 	static getDate() {
 		const date = new Date();
 		return `${date.getMonth() + 1}-${date.getDate()}-${date.getFullYear()}`;
@@ -20,10 +19,10 @@ class Helper {
 
 
 	/**
-     * Generates code of number length.
-     * @param {number} number length of code to generate
-     * @returns {string} a string representing the code.
-     */
+	 * Generates code of number length.
+	 * @param {number} number length of code to generate
+	 * @returns {string} a string representing the code.
+	 */
 	static getCode(number) {
 		let code = "";
 		for (let i = 0; i < number; i++) {
@@ -35,10 +34,10 @@ class Helper {
 	}
 
 	/**
-     * Signs and returns a signature
-     * @param {any} data 
-     * @returns {string} a string representing the signature
-     */
+	 * Signs and returns a signature
+	 * @param {any} data 
+	 * @returns {string} a string representing the signature
+	 */
 	static signToken(data, privateKey) {
 
 		const sign = createSign("SHA256");
@@ -49,24 +48,24 @@ class Helper {
 	}
 
 	/**
-     * Gets a color
-     * @param {string} flag type of log message
-     * @returns {string} a string representing the color.
-     */
+	 * Gets a color
+	 * @param {string} flag type of log message
+	 * @returns {string} a string representing the color.
+	 */
 	static getColor(flag) {
 		let color;
 		switch (flag) {
-		case "INFO":
-			color = "green";
-			break;
-		case "WARNING":
-			color = "yellow";
-			break;
-		case "ERROR":
-			color = "red";
-			break;
-		default:
-			color = "blue";
+			case "INFO":
+				color = "green";
+				break;
+			case "WARNING":
+				color = "yellow";
+				break;
+			case "ERROR":
+				color = "red";
+				break;
+			default:
+				color = "blue";
 
 		}
 		return color;
@@ -74,12 +73,13 @@ class Helper {
 
 
 	/**
-     * Builds an html template
-     * @param {string} href 
-     * @param {string} type 
-     * @returns 
-     */
+	 * Builds an html template
+	 * @param {string} href 
+	 * @param {string} type 
+	 * @returns 
+	 */
 	static async buildEmailTemplate(name) {
+		const Crud = require("./Crud"); //prevent circular dependencies
 		const template = await Crud.read(`${name}.html`);
 		return template;
 	}

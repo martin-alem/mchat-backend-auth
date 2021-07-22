@@ -24,6 +24,8 @@ class SendResponse {
         res.set("Access-Control-Max-Age", 86400);
         res.set("Date", new Date().toUTCString());
         res.set("Connection", "keep-alive");
+        res.set("X-Server-Name", "authenticate");
+        res.set("X-Server-Version", "1.0.0");
         res.set("X-Powered-By", "mchat");
 
         // if the headers contain information add the res.
@@ -61,6 +63,8 @@ class SendResponse {
         res.set("Access-Control-Max-Age", 86400);
         res.set("Date", new Date().toUTCString());
         res.set("Connection", "keep-alive");
+        res.set("X-Server-Name", "authenticate");
+        res.set("X-Server-Version", "1.0.0");
         res.set("X-Powered-By", "mchat");
 
         const responseObject = {
