@@ -18,6 +18,18 @@ app.set("x-powered-by", false);
 app.use(express.json());
 
 
+/**
+ * Manual cors configuration
+ */
+app.options("*", (req, res) => {
+	res.status(200);
+	res.set("Access-Control-Allow-Origin", process.env.FRONTEND_URL);
+	res.set("Access-Control-Allow-Credentials", true);
+	res.set("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+	res.set("Access-Control-Allow-Headers", "Access-Control-Allow-Origin, Access-Control-Allow-Methods, Access-Control-Allow-Credentials, Content-Type");
+	res.end();
+});
+
 //Route middleware
 app.use("/authenticate", loginRouter);
 app.use("/", pingRouter);

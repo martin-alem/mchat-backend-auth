@@ -24,10 +24,10 @@ function validatePayLoad(req, res, next) {
 
 function validate(req, res, next) {
 
-	const { phone, password } = req.body;
-	if (!Validate.isValidPhone(phone) || !Validate.isValidPassword(password)) {
+	const { phone } = req.body;
+	if (!Validate.isValidPhone(phone)) {
 		const statusCode = 400;
-		const error = "Invalid phone number or password";
+		const error = "Invalid phone number";
 		next({ error, statusCode });
 		return;
 	}
