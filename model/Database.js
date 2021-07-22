@@ -6,29 +6,29 @@
 
 const mysql = require("mysql");
 const path = require("path");
-const Logger = require(path.join(__dirname, "../utils/Logger"))
+const Logger = require(path.join(__dirname, "../utils/Logger"));
+
+let connection = null;
 
 class MysqlDatabase {
 
-    static connection = null;
+	constructor(config) {
 
-    constructor(config) {
+		if (connection === null) {
+			connection = mysql.createConnection(config);
+			connection.connect(error => {
+				if (error) {
+					Logger.logError(error, __filename, new Date());
+					throw new Error("Couldn't connect to database");
+				}
+				else {
+					Logger.logInfo("Database connection established", __filename, new Date());
+				}
+			});
+		}
 
-        if (MysqlDatabase.connection === null) {
-            MysqlDatabase.connection = mysql.createConnection(config);
-            MysqlDatabase.connection.connect(error => {
-                if (error) {
-                    Logger.logError(err.message, __filename, new Date());
-                    throw new Error("Couldn't connect to database");
-                }
-                else {
-                    Logger.logInfo("Database connection established", __filename, new Date());
-                }
-            });
-        }
-
-        return MysqlDatabase.connection;
-    }
+		return connection;
+	}
 
 }
 

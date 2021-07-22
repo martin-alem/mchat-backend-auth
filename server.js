@@ -20,8 +20,8 @@ const httpServer = http.createServer(option, app);
 
 
 
-const PORT = process.env.PORT || 3000;
-const HOST = process.env.HOST || "localhost";
+const PORT = process.env.PORT || 8080;
+const HOST = process.env.HOST || "0.0.0.0";
 
 //initializing and starting server.
 httpServer.listen(PORT, HOST, () => {

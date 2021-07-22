@@ -14,7 +14,7 @@ class SendResponse {
      * @param {object} req request object
      * @param {object} res responses object 
      */
-    static successResponse(statusCode, req, res, message = "", headers = {}) {
+    static successResponse(statusCode = 200, req, res, message = "", headers = {}) {
         res.type("json");
         res.status(statusCode);
         res.set("Access-Control-Allow-Origin", `${req.hostname}`);
@@ -29,7 +29,7 @@ class SendResponse {
         // if the headers contain information add the res.
         if (Object.keys(headers).length > 0) {
             for (var key in headers) {
-                res.set(key, headers[key])
+                res.set(key, headers[key]);
             }
         }
 
@@ -39,7 +39,7 @@ class SendResponse {
                 "message": message,
                 "error": null
             }
-        }
+        };
         return res.json(responseObject);
     }
 
@@ -51,7 +51,7 @@ class SendResponse {
      * @param {object} req request object
      * @param {object} res responses object 
      */
-    static failedResponse(statusCode, req, res, error) {
+    static failedResponse(statusCode = 500, req, res, error) {
         res.type("json");
         res.status(statusCode);
         res.set("Access-Control-Allow-Origin", `${req.hostname}`);
@@ -69,7 +69,7 @@ class SendResponse {
                 "message": "",
                 "error": error
             }
-        }
+        };
         return res.json(responseObject);
     }
 }
