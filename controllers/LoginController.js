@@ -23,7 +23,7 @@ class LoginController extends Controller {
 
 		try {
 			if (Hash.hashData(password) === d_password) {
-				const privateKey = fs.readFileSync(path.join(__dirname, "../data/private.txt"));
+				const privateKey = JSON.parse(fs.readFileSync(path.join(__dirname, "../data/keys.json")))[0]["sign_and_verify"]["private"];
 				const signature = Helper.signToken(phone, privateKey);
 				const statusCode = 200;
 				const message = "Login Successful";
