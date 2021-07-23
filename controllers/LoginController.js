@@ -5,6 +5,7 @@
  */
 
 const path = require("path");
+const fs = require("fs");
 const Controller = require(path.join(__dirname, "./Controller"));
 const SendResponse = require(path.join(__dirname, "../utils/SendResponse"));
 const Hash = require(path.join(__dirname, "../services/Hash"));
@@ -22,7 +23,7 @@ class LoginController extends Controller {
 
 		try {
 			if (Hash.hashData(password) === d_password) {
-				const privateKey = process.env.PRIVATE_KEY;
+				const privateKey = fs.readFileSync(path.join(__dirname, "../data/private.txt"));
 				const signature = Helper.signToken(phone, privateKey);
 				const statusCode = 200;
 				const message = "Login Successful";
