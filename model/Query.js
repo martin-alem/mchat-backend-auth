@@ -10,7 +10,7 @@ const Logger = require(path.join(__dirname, "../utils/Logger"));
 const databaseConfig = {
 	host: process.env.D_HOST || "mchat-do-user-9421788-0.b.db.ondigitalocean.com",
 	user: process.env.D_USER || "doadmin",
-	password: process.env.D_PASSWORD || "ucodws0mfey2k5f4",
+	password: process.env.D_PASSWORD || "whbacznuqs0712s9",
 	database: process.env.DATABASE || "test_mchat",
 	port: process.env.D_PORT || 25060,
 	sslmode: process.env.SSL_MODE || "REQUIRED"
